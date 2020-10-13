@@ -132,14 +132,15 @@ package
 			debugText.filters = [debugTextShadow];
 			debugText.visible = false;
 			
+			visible = true;
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			trace("CustomCrosshair Started");
 		}
 		
 		private function addedToStageHandler(e:Event):void
 		{
 			topLevel = stage.getChildAt(0);
+			displayText(stage.getChildAt(0).name);
 			if(topLevel != null && getQualifiedClassName(topLevel) == "HUDMenu")
 			{
 				init();
@@ -200,10 +201,10 @@ package
 				removeFo76Crosshair();
 			}
 			initCustomCrosshair();
+			editCompass();
+			
 			updateTimer.addEventListener(TimerEvent.TIMER_COMPLETE, update);
 			updateTimer.start();
-			
-			
 		}
 		
 		private function update(event:TimerEvent):void
@@ -381,8 +382,7 @@ package
 				);*/
 				
 				//Set compass at the top of the screen
-				/*if (topLevel.BottomCenterGroup_mc != null &&
-				topLevel.BottomCenterGroup_mc.CompassWidget_mc != null)
+				/*if (topLevel.BottomCenterGroup_mc != null && topLevel.BottomCenterGroup_mc.CompassWidget_mc != null)
 				{
 					var compass:MovieClip = topLevel.BottomCenterGroup_mc.CompassWidget_mc;
 					compass.y = -760;
@@ -541,6 +541,13 @@ package
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Standard_Standard.x = offScreenPosition;
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Standard_None.x = offScreenPosition;
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Standard_Dot.x = offScreenPosition;
+		}
+		
+		
+		private function editCompass():void
+		{
+			topLevel.BottomCenterGroup_mc.CompassWidget_mc.CompassBar_mc.visible = false;
+			topLevel.BottomCenterGroup_mc.CompassWidget_mc.y = topLevel.TopCenterGroup_mc.StealthMeter_mc.y + 200;
 		}
 		
 	}

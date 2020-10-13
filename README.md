@@ -14,25 +14,31 @@ Crosshair mod for Fallout 76.
 
 ## ? Installation and configuration
 For compatibility with ChatMod, load ChatMod after CustomCrosshair.
+
 ⇨ If you have trouble with any mods not applying or still applying, do a scan and repair in the launcher.
+
 ⇨ Manual installation guide: https://www.nexusmods.com/fallout76/articles/42
+
 ⇨ How to use xml configuration: https://www.nexusmods.com/fallout76/articles/46
+
 ⇨ Current version configuration: https://www.nexusmods.com/fallout76/articles/49
+
 ⇨ Optional tool, Notepad++ for better read of xml: https://notepad-plus-plus.org/
+
 
 ## ↑ New potential features
 ### General
 □ In the long run, outside the game interface or in game. Less likely in game and would take longer for me.
-### Crosshair
+#### Crosshair
 ○ Different color for when using melee, guns, aiming down sight or aiming objects/allies.
 ○ Animated crosshair based on ammo spent per second, movement or mouse click.
 ○ More xml configuration options.
-### HUD interface
+#### HUD interface
 ◊ Move compass, sneak meter, enemy health bars, and ally health bars to the bottom or top.
 ◊ Move player status icons somewhere more visible. The one bottom right.
 ◊ Change color or glow indicator when meter is low. Meters: player health, target health, thirst or hunger.
 ◊ Always show thirst or hunger meter.
-### Completed
+#### Completed
 √ Different crosshair for when using melee, guns, aiming down sight or aiming at objects/allies.
 √ Compatibility with major HUD interface mods.
 √ Configurable mod.
@@ -65,13 +71,13 @@ But, doing so you lose some functionalities like transparency. Might have been c
 For some shapes like squares and rectangles, it doesn't matter transparency.
 The best is by using raw edit without replacing svg in shapes folder.
 
-### FlashDevelop
+#### FlashDevelop
 https://www.flashdevelop.org/
 
-### JPEXS
+#### JPEXS
 https://github.com/jindrapetrik/jpexs-decompiler
 
-### Archive2
+#### Archive2
 For Ba2 files. It comes with fallout 4 creation tool.
 You can download it in the bethesda launcher.
 Default location: Bethesda.net Launcher\games\CK\Tools\Archive2\Archive2.exe

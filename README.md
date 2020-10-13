@@ -1,38 +1,38 @@
 # Custom-Crosshair
 Crosshair mod for Fallout 76. 
 
-+ Mod ability
-● Add a dot, circle and static cross.
-● Display it when using melee, guns or aim down sight.
-● Glowing effect radius, strength and color.
-● Change size, length, thickness and radius of dot/circle/crosshair.
-● Chose your color for on target and off target.
-● Remove the default dynamic crosshair.
-● Toggle inner and outer shadow effect.
-● Always show thirst and hunger meter.
-↳ They will just fade in and out sometimes but stay visible most of the time.
+## + Mod ability
+  - Add a dot, circle and static cross.
+  - Display it when using melee, guns or aim down sight.
+  - Glowing effect radius, strength and color.
+  - Change size, length, thickness and radius of dot/circle/crosshair.
+  - Chose your color for on target and off target.
+  - Remove the default dynamic crosshair.
+  - Toggle inner and outer shadow effect.
+  - Always show thirst and hunger meter.
+  - ↳ They will just fade in and out sometimes but stay visible most of the time.
 
-? Installation and configuration
-⇨ For compatibility with ChatMod, load ChatMod after CustomCrosshair.
+## ? Installation and configuration
+For compatibility with ChatMod, load ChatMod after CustomCrosshair.
 ⇨ If you have trouble with any mods not applying or still applying, do a scan and repair in the launcher.
 ⇨ Manual installation guide: https://www.nexusmods.com/fallout76/articles/42
 ⇨ How to use xml configuration: https://www.nexusmods.com/fallout76/articles/46
 ⇨ Current version configuration: https://www.nexusmods.com/fallout76/articles/49
 ⇨ Optional tool, Notepad++ for better read of xml: https://notepad-plus-plus.org/
 
-↑ New potential features
-· General
+## ↑ New potential features
+### General
 □ In the long run, outside the game interface or in game. Less likely in game and would take longer for me.
-· Crosshair
+### Crosshair
 ○ Different color for when using melee, guns, aiming down sight or aiming objects/allies.
 ○ Animated crosshair based on ammo spent per second, movement or mouse click.
 ○ More xml configuration options.
-· HUD interface
+### HUD interface
 ◊ Move compass, sneak meter, enemy health bars, and ally health bars to the bottom or top.
 ◊ Move player status icons somewhere more visible. The one bottom right.
 ◊ Change color or glow indicator when meter is low. Meters: player health, target health, thirst or hunger.
 ◊ Always show thirst or hunger meter.
-· Completed
+### Completed
 √ Different crosshair for when using melee, guns, aiming down sight or aiming at objects/allies.
 √ Compatibility with major HUD interface mods.
 √ Configurable mod.

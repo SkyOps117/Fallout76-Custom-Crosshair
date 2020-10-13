@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Crosshair>
+<Filters>
+	<Glow>
+		<Visible>false</Visible>
+		<Length>4</Length>
+		<Strength>1.2</Strength>
+	</Glow>
+	<InnerShadow>
+		<Visible>false</Visible>
+	</InnerShadow>
+	<OuterShadow>
+		<Visible>true</Visible>
+	</OuterShadow>
+</Filters>
+<Colors>
+	<OnTarget>
+		<ColorChange>
+			<RGB>ff0000</RGB>
+			<Brightness>0</Brightness>
+			<Saturation>69</Saturation>
+			<Contrast>0</Contrast>
+		</ColorChange>
+		<Glow>
+			<RGB>ff0000</RGB>
+		</Glow>
+	</OnTarget>
+	<OffTarget>
+		<ColorChange>
+			<RGB>F5CB5B</RGB>
+			<Brightness>0</Brightness>
+			<Saturation>0</Saturation>
+			<Contrast>0</Contrast>
+		</ColorChange>
+		<Glow>
+			<RGB>FFFFCB</RGB>
+		</Glow>
+	</OffTarget>
+</Colors>
+<Parts>
+	<Fo76>
+		<Visible>false</Visible>
+	</Fo76>
+	<Custom>
+		<MeleeState>
+			<ShowDot>true</ShowDot>
+			<ShowCircle>true</ShowCircle>
+			<ShowCross>false</ShowCross>
+		</MeleeState>
+		<GunState>
+			<ShowDot>false</ShowDot>
+			<ShowCircle>false</ShowCircle>
+			<ShowCross>true</ShowCross>
+		</GunState>
+		<OnSightState>
+			<ShowDot>true</ShowDot>
+			<ShowCircle>false</ShowCircle>
+			<ShowCross>false</ShowCross>
+		</OnSightState>
+		<Shapes>
+			<Dot>
+				<Size>4</Size>
+			</Dot>
+			<Circle>
+				<Radius>10</Radius>
+				<Thickness>2</Thickness>
+			</Circle>
+			<Cross>
+				<Gap>8</Gap>
+				<Length>8</Length>
+				<Thickness>2</Thickness>
+			</Cross>
+		</Shapes>
+	</Custom>
+</Parts>
+</Crosshair>

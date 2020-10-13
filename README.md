@@ -36,9 +36,9 @@ For compatibility with ChatMod, load ChatMod after CustomCrosshair.
 √ Different crosshair for when using melee, guns, aiming down sight or aiming at objects/allies.
 √ Compatibility with major HUD interface mods.
 √ Configurable mod.
-*Post a comment if you have a new idea. Always looking for new one :)
+* Post a comment if you have a new idea. Always looking for new one :)
 
-🖒 Recommended mods
+## 🖒 Recommended mods
 → Perk Loadout Manager (PLM)
 ↳https://www.nexusmods.com/fallout76/mods/124
 → Improved Health Bars
@@ -52,7 +52,7 @@ For compatibility with ChatMod, load ChatMod after CustomCrosshair.
 → Inventory Plus
 ↳https://www.nexusmods.com/fallout76/mods/125
 
-♠ Creation of this mod
+## ♠ Creation of this mod
 This mod consist of a swf loaded into fallout76 hud menu. Some functionality are limited.
 It is not possible to save data. You can look inside this mode swf with Jpexs after extracting them with Archive2.
 Editing complex actionscript of Fallout 76 with Jpexs is not recomended.
@@ -65,20 +65,20 @@ But, doing so you lose some functionalities like transparency. Might have been c
 For some shapes like squares and rectangles, it doesn't matter transparency.
 The best is by using raw edit without replacing svg in shapes folder.
 
-FlashDevelop
+### FlashDevelop
 https://www.flashdevelop.org/
 
-JPEXS
+### JPEXS
 https://github.com/jindrapetrik/jpexs-decompiler
 
-Archive2
+### Archive2
 For Ba2 files. It comes with fallout 4 creation tool.
 You can download it in the bethesda launcher.
 Default location: Bethesda.net Launcher\games\CK\Tools\Archive2\Archive2.exe
 
 
 
-♥ People to thanks
+### ♥ People to thanks
 Big thanks to Keretus and Liyalai for helping improving compatibility with other major HUD interface mods.
 They are the one making this mod up to date with Fo76 by decompiling and recompiling the most recent
 hudmenu.swf to include a swf loader for this mod.
@@ -86,7 +86,7 @@ You can even do the update for this mod yourself by adding plm hudmenu.swf into 
 That being said, I couldn't have make every options of this mod under one download without Keretus and Liyalai
 work.
 
-⟳ Versioning
+### ⟳ Versioning
 · How to read versioning
 X.Y.Z
 X = Major update. When a lot of stuff change to my interpretation.
@@ -94,7 +94,7 @@ Y = Feature update. You need to update your XML configuration.
 Z = Compatibility and bug fixes update. No need to update XML configuration.
 Each letter get incremented once per updates.
 
-· Version archive section
+### · Version archive section
 Versioning is currently inconsistent in the nexus changelog before 2.0.0
 1.2+ Conflic with mods which direct edit interface/hudmenu.swf.
 1.2 Optional centered dot, glow effect and you can now make all color combo.

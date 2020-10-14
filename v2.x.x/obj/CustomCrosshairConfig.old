@@ -14,7 +14,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'9/07/20'</value>
+      <value>'10/13/20'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -30,12 +30,12 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\Users\Phil\Documents\Settings\Fallout 76\My Mods\Custom Crosshair\Loader\CustomCrosshair v2.x.x\src</path-element>
+      <path-element>C:\Users\Phil\Documents\GitHub\Custom-Crosshair\v2.x.x\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Phil\Documents\Settings\Fallout 76\My Mods\Custom Crosshair\Loader\CustomCrosshair v2.x.x\src\Main.as</path-element>
+    <path-element>C:\Users\Phil\Documents\GitHub\Custom-Crosshair\v2.x.x\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>

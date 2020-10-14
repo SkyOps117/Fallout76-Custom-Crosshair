@@ -8,6 +8,8 @@ package
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard
 	import flash.utils.Timer;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.GlowFilter;
@@ -29,6 +31,7 @@ package
 	import parts.CircleCrosshair;
 	import parts.CrossCrosshair;
 	import CrosshairIndex;
+
 
 	/**
 	 * ...
@@ -66,6 +69,10 @@ package
 		
 		private var crosshairColorMatrixFilter:ColorMatrixFilter;
 		private var tragetColorMatrixFilter:ColorMatrixFilter;
+		private var dropInnerShadow:DropShadowFilter;
+		private var dropOuterShadow:DropShadowFilter;
+		
+		private var innerShadow:Number = 1;
 		
 		private var crosshairBrightness:Number = -40;
 		private var crosshairContrast:Number = 5;
@@ -86,6 +93,7 @@ package
 		private var crossThickness:Number = 2;
 		private var crossLength:Number = 8;
 		private var crossGap:Number = 8;
+		
 		private var drawDot:Boolean = false;
 		private var drawCircle:Boolean = false;
 		private var drawCross:Boolean = false;
@@ -118,6 +126,9 @@ package
 			tragetColorMatrixFilter = ColorMath.getColorChangeFilter( -90, 15, 25, -50);
 			crosshairColorMatrixFilter = ColorMath.getColorChangeFilter( 0, 0, 0, 60);
 			
+			dropInnerShadow = new DropShadowFilter(1, 45, 0x000000, 0.75, 4, 4, 1, BitmapFilterQuality.HIGH, true, false, false);
+			dropOuterShadow = new DropShadowFilter(1, 45, 0x000000, 1, 2, 2, 1, BitmapFilterQuality.HIGH, false, false, false);
+			
 			debugTextShadow = new DropShadowFilter(1, 45, 0x000000, 0.75, 4, 4, 1, BitmapFilterQuality.HIGH, false, false, false);
 			debugText = new TextField();
 			debugTextFormat = new TextFormat("$MAIN_Font_Light", 18, 0xF0F0F0); //color: 16777163
@@ -140,7 +151,16 @@ package
 		private function addedToStageHandler(e:Event):void
 		{
 			topLevel = stage.getChildAt(0);
-			displayText(stage.getChildAt(0).name);
+			
+			/*
+			//Debug text
+			displayText("topLevel numChildren: " + topLevel.numChildren.toString());
+			for (var i:int = 0; i < topLevel.numChildren; i++ )
+			{
+				displayText("Name: " + topLevel.getChildAt(i).name + "Class: " + getQualifiedClassName(topLevel.getChildAt(i)));
+			}
+			*/
+			
 			if(topLevel != null && getQualifiedClassName(topLevel) == "HUDMenu")
 			{
 				init();
@@ -154,8 +174,7 @@ package
 		private function init():void
 		{
 			stage.addChild(debugText);
-			xmlLoader = new URLLoader();
-			xmlLoader.addEventListener(Event.COMPLETE, onFileLoad);
+			
 			loadConfig();
 		}
 		
@@ -170,49 +189,60 @@ package
 				xmlLoader.dataFormat = URLLoaderDataFormat.TEXT;
 				xmlLoader.load(tempURLRequest);
 				*/
+				xmlLoader = new URLLoader();
+				xmlLoader.addEventListener(Event.COMPLETE, onFileLoad);
 				xmlLoader.load(new URLRequest("../CustomCrosshair.xml"));
-				return;
 			}
 			catch (error:Error)
 			{
 				displayText("Error finding custom crosshair configuration file. " + error.message.toString());
-				return;
 			}
 		}
 		
 		private function onFileLoad(e:Event):void
 		{
-			/*
+			
 			try
 			{
 				initCommands(e.target.data);
-				return;
+				
 			}
 			catch (error:Error)
 			{
 				displayText("Error loading CustomCrosshair.xml " + error.message.toString());
-				return;
+				
 			}
-			*/
 			
-			initCommands(e.target.data);
 			if (!fo76CrosshairVisible)
 			{
 				removeFo76Crosshair();
 			}
-			initCustomCrosshair();
-			editCompass();
 			
+			initCustomCrosshair();
+			editCrosshair();
 			updateTimer.addEventListener(TimerEvent.TIMER_COMPLETE, update);
 			updateTimer.start();
+			
+			//topLevel.BottomCenterGroup_mc.CompassWidget_mc.scaleX = 1.4;
+			//topLevel.BottomCenterGroup_mc.CompassWidget_mc.scaleY = 1.4;
+			//topLevel.TopCenterGroup_mc.scaleX = 1.25;
+			//topLevel.TopCenterGroup_mc.scaleY = 1.25;
+			
+			/*
+			displayText("TopCenterGroup y: " + topLevel.TopCenterGroup_mc.y);
+			displayText("BottomCenterGroup y: " + topLevel.BottomCenterGroup_mc.y);
+			displayText("Compass y: " + topLevel.BottomCenterGroup_mc.CompassWidget_mc.y);
+			displayText("CompassBar y: " + topLevel.BottomCenterGroup_mc.CompassWidget_mc.CompassBar_mc.y);
+			*/
 		}
 		
 		private function update(event:TimerEvent):void
 		{
 			editCrosshair();
-			editInterface();
-			ammoCount = int(topLevel.RightMeters_mc.AmmoCount_mc.ClipCount_tf.text);
+			//editInterface();
+			//editCompass();
 			
+			ammoCount = int(topLevel.RightMeters_mc.AmmoCount_mc.ClipCount_tf.text);
 		}
 		
 		private function initCustomCrosshair():void
@@ -225,8 +255,6 @@ package
 				var crosshairPosX:Number = topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.x;
 				var crosshairPosY:Number = topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.y;
 				
-				var dropInnerShadow:DropShadowFilter = new DropShadowFilter(1, 45, 0x000000, 0.75, 4, 4, 1, BitmapFilterQuality.HIGH, true, false, false);
-				var dropOuterShadow:DropShadowFilter = new DropShadowFilter(1, 45, 0x000000, 1, 2, 2, 1, BitmapFilterQuality.HIGH, false, false, false);
 				var crosshairFilters:Array = new Array();
 				if (drawInnerShadow)
 					crosshairFilters.push(dropInnerShadow);
@@ -355,31 +383,7 @@ package
 				}
 				
 				
-				/*displayText(
-				  	"MeterBarEnemy percent " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc..percent + "\r" +
-					"MeterBarFriendly width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarFriendly_mc.width + "\r" +
-					"MeterBarEnemy width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc.width + "\r" +
-					"MeterBarInternal width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc + "\r" +
-					"EnnemyHealth percent " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.percent
-				);*/
 				
-				/*displayText(
-					"CrosshairTicks " + crosshairTicks.visible.toString() + "\r" +
-					"CrosshairClips " + crosshairClips.visible.toString() + "\r" +
-					"None_None " + crosshairClips.None_None.visible.toString() + "\r" +
-					"None_Dot " + crosshairClips.None_Dot.visible.toString() + "\r" +
-					"None_Standard " + crosshairClips.None_Standard.visible.toString() + "\r" +
-					"Dot_Dot " + crosshairClips.Dot_Dot.visible.toString() + "\r" +
-					"Dot_Standard " + crosshairClips.Dot_Standard.visible.toString() + "\r" +
-					"Dot_Activate " + crosshairClips.Dot_Activate.visible.toString() + "\r" +
-					"Standard_None " + crosshairClips.Standard_None.visible.toString() + "\r" +
-					"Standard_Dot " + crosshairClips.Standard_Dot.visible.toString() + "\r" +
-					"Standard_Activate " + crosshairClips.Standard_Activate.visible.toString() + "\r" +
-					"Activate_Activate " + crosshairClips.Activate_Activate.visible.toString() + "\r" +
-					"Activate_None " + crosshairClips.Activate_None.visible.toString() + "\r" +
-					"Activate_Dot " + crosshairClips.Activate_Dot.visible.toString() + "\r" +
-					"Activate_Standard " + crosshairClips.Activate_Standard.visible.toString()
-				);*/
 				
 				//Set compass at the top of the screen
 				/*if (topLevel.BottomCenterGroup_mc != null && topLevel.BottomCenterGroup_mc.CompassWidget_mc != null)
@@ -422,11 +426,6 @@ package
 				//Adding back filters
 				topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.filters = tempFilters;
 			}
-			
-		}
-		
-		public function editInterface():void
-		{
 			
 		}
 		
@@ -500,6 +499,13 @@ package
 			debugText.text += _text + "\n";
 		}
 		
+		
+		private function newDisplayText(_text:String):void
+		{
+			debugText.visible = true;
+			debugText.text = _text;
+		}
+		
 		private function setGunCrosshairVisible():void
 		{
 			gunCrosshair.visible = true;
@@ -543,13 +549,58 @@ package
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Standard_Dot.x = offScreenPosition;
 		}
 		
+		public function editInterface():void
+		{
+			var topGroup:MovieClip = topLevel.TopCenterGroup_mc;
+			var bottomGroup:MovieClip = topLevel.BottomCenterGroup_mc;
+			topGroup.y = bottomGroup.y - (topGroup.height/2);
+			bottomGroup.y = bottomGroup.height/2;
+		}
 		
 		private function editCompass():void
 		{
-			topLevel.BottomCenterGroup_mc.CompassWidget_mc.CompassBar_mc.visible = false;
-			topLevel.BottomCenterGroup_mc.CompassWidget_mc.y = topLevel.TopCenterGroup_mc.StealthMeter_mc.y + 200;
+			//var topY:Number = topLevel.TopCenterGroup_mc.y;
+			//var newPosY:Number = topY + 200;
+			//topLevel.BottomCenterGroup_mc.CompassWidget_mc.visible = false;
+			//var sumY:Number = -topLevel.BottomCenterGroup_mc.y;
+			//var bottomY:Number = topLevel.BottomCenterGroup_mc.y;
+			var compass:MovieClip = new MovieClip;
+			//topLevel.BottomCenterGroup_mc.CompassWidget_mc.y = -topLevel.BottomCenterGroup_mc.y + 50;
+			//topLevel.BottomCenterGroup_mc.CompassWidget_mc.alpha = 0.65;
+			//topLevel.BottomCenterGroup_mc.CompassWidget_mc.CompassBar_mc.visible = false;
+			
+			topLevel.TopCenterGroup_mc.y = topLevel.BottomCenterGroup_mc.y - 80;
+			topLevel.BottomCenterGroup_mc.y = -topLevel.BottomCenterGroup_mc.y;
+			
+			topLevel.EnemyHealthMeter_mc.BabylonAILevel_mc.visible = true;
 		}
 		
+		
+		private function displayDebugText():void
+		{
+			displayText("MeterBarEnemy percent " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc..percent);
+			displayText("MeterBarFriendly width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarFriendly_mc.width);
+			displayText("MeterBarEnemy width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc.width);
+			displayText("MeterBarInternal width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc.width);
+			displayText("EnnemyHealth percent " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.percent);
+			displayText(" ~ ");
+			displayText("CrosshairTicks " + crosshairTicks.visible.toString());
+			displayText("CrosshairClips " + crosshairClips.visible.toString());
+			displayText("None_None " + crosshairClips.None_None.visible.toString());
+			displayText("None_Dot " + crosshairClips.None_Dot.visible.toString());
+			displayText("None_Standard " + crosshairClips.None_Standard.visible.toString());
+			displayText("Dot_Dot " + crosshairClips.Dot_Dot.visible.toString());
+			displayText("Dot_Standard " + crosshairClips.Dot_Standard.visible.toString());
+			displayText("Dot_Activate " + crosshairClips.Dot_Activate.visible.toString());
+			displayText("Standard_None " + crosshairClips.Standard_None.visible.toString());
+			displayText("Standard_Dot " + crosshairClips.Standard_Dot.visible.toString());
+			displayText("Standard_Activate " + crosshairClips.Standard_Activate.visible.toString());
+			displayText("Activate_Activate " + crosshairClips.Activate_Activate.visible.toString());
+			displayText("Activate_None " + crosshairClips.Activate_None.visible.toString());
+			displayText("Activate_Dot " + crosshairClips.Activate_Dot.visible.toString());
+			displayText("Activate_Standard " + crosshairClips.Activate_Standard.visible.toString());
+			
+		}
 	}
 	
 }

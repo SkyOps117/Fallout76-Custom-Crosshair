@@ -147,4 +147,4 @@ Versioning is currently inconsistent in the nexus changelog before 2.0.0
 
 1.1 Know to conflic with: Unstretched ultrawide, Chat mod.
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE" target="_blank"><img src="http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HER/0.jpg" alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=rSAlH52bP04" target="_blank"><img src="http://img.youtube.com/vi/rSAlH52bP04/0.jpg" alt="PREVIEW VIDEO" width="240" height="180" border="10" /></a>

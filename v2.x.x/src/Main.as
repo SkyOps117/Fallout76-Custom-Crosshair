@@ -24,6 +24,7 @@ package
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	import flash.geom.Point;
 	import fl.motion.Color;
 	import fl.motion.ColorMatrix;
 	import fl.motion.AdjustColor;
@@ -113,6 +114,9 @@ package
 		private var sightHasCircle:Boolean = false;
 		private var sightHasCross:Boolean = false;
 		
+		private var globalBottomPos:Point;
+		private var globalTopPos:Point;
+		
 		public function Main() 
 		{
 			updateTimer = new Timer(21, 0);
@@ -151,16 +155,6 @@ package
 		private function addedToStageHandler(e:Event):void
 		{
 			topLevel = stage.getChildAt(0);
-			
-			/*
-			//Debug text
-			displayText("topLevel numChildren: " + topLevel.numChildren.toString());
-			for (var i:int = 0; i < topLevel.numChildren; i++ )
-			{
-				displayText("Name: " + topLevel.getChildAt(i).name + "Class: " + getQualifiedClassName(topLevel.getChildAt(i)));
-			}
-			*/
-			
 			if(topLevel != null && getQualifiedClassName(topLevel) == "HUDMenu")
 			{
 				init();
@@ -174,6 +168,29 @@ package
 		private function init():void
 		{
 			stage.addChild(debugText);
+			
+			/*
+			//Debug text
+			displayText("topLevel numChildren: " + topLevel.numChildren.toString());
+			for (var i:int = 0; i < topLevel.numChildren; i++ )
+			{
+				displayText("Name: " + topLevel.getChildAt(i).name + "Class: " + getQualifiedClassName(topLevel.getChildAt(i)));
+			}
+			*/
+			
+			globalBottomPos = topLevel.BottomCenterGroup_mc.localToGlobal(new Point(topLevel.BottomCenterGroup_mc.x, topLevel.BottomCenterGroup_mc.y));
+			globalTopPos = topLevel.TopCenterGroup_mc.localToGlobal(new Point(topLevel.TopCenterGroup_mc.x, topLevel.TopCenterGroup_mc.y));
+			
+			//Scale ennemy/ally health bar
+			//topLevel.TopCenterGroup_mc.scaleX = 1.5;
+			//topLevel.TopCenterGroup_mc.scaleY = 1.5;
+			
+			/*
+			displayText("globalTopPos: " + globalTopPos.toString());
+			displayText("globalBottomPos: " + globalBottomPos.toString());
+			displayText("localTopPos: " + new Point(topLevel.TopCenterGroup_mc.x, topLevel.TopCenterGroup_mc.y));
+			displayText("localBottomPos: " + new Point(topLevel.BottomCenterGroup_mc.x, topLevel.BottomCenterGroup_mc.y));
+			*/
 			
 			loadConfig();
 		}
@@ -551,10 +568,14 @@ package
 		
 		public function editInterface():void
 		{
-			var topGroup:MovieClip = topLevel.TopCenterGroup_mc;
-			var bottomGroup:MovieClip = topLevel.BottomCenterGroup_mc;
-			topGroup.y = bottomGroup.y - (topGroup.height/2);
-			bottomGroup.y = bottomGroup.height/2;
+			topLevel.TopCenterGroup_mc.y = topLevel.BottomCenterGroup_mc.y;
+			//topLevel.BottomCenterGroup_mc.
+			
+			//topLevel.TopCenterGroup_mc.y = globalTopPos.y;
+			//topLevel.BottomCenterGroup_mc.y = globalBottomPos.y;
+			
+			//topGroup.y = bottomGroup.y - (topGroup.height/2);
+			//bottomGroup.y = bottomGroup.height/2;
 		}
 		
 		private function editCompass():void
@@ -584,6 +605,8 @@ package
 			displayText("MeterBarInternal width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc.width);
 			displayText("EnnemyHealth percent " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.percent);
 			displayText(" ~ ");
+			
+			/*
 			displayText("CrosshairTicks " + crosshairTicks.visible.toString());
 			displayText("CrosshairClips " + crosshairClips.visible.toString());
 			displayText("None_None " + crosshairClips.None_None.visible.toString());
@@ -599,7 +622,7 @@ package
 			displayText("Activate_None " + crosshairClips.Activate_None.visible.toString());
 			displayText("Activate_Dot " + crosshairClips.Activate_Dot.visible.toString());
 			displayText("Activate_Standard " + crosshairClips.Activate_Standard.visible.toString());
-			
+			*/
 		}
 	}
 	

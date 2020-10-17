@@ -1,6 +1,9 @@
 # Custom-Crosshair
 Crosshair mod for Fallout 76. 
 
+## Preview video
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=rSAlH52bP04" target="_blank"><img src="http://img.youtube.com/vi/rSAlH52bP04/0.jpg" alt="PREVIEW VIDEO" width="960" height="540" border="10" /></a>
+
 ## + Mod ability
   - Add a dot, circle and static cross.
   - Display it when using melee, guns or aim down sight.
@@ -146,3 +149,4 @@ Versioning is currently inconsistent in the nexus changelog before 2.0.0
 1.1 Must be placed after PLM, Improved Health Bar and Event Notification.
 
 1.1 Know to conflic with: Unstretched ultrawide, Chat mod.
+

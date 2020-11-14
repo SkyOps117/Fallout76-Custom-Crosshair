@@ -31,9 +31,10 @@ package
 	import parts.DotCrosshair;
 	import parts.CircleCrosshair;
 	import parts.CrossCrosshair;
+	import cfg.CrosshairConfig;
 	import CrosshairIndex;
-
-
+	import Crosshair;
+	
 	/**
 	 * ...
 	 * @author Bolbman
@@ -42,6 +43,8 @@ package
 	{
 		
 		private var topLevel:* = null;
+		private var crosshair:Crosshair;
+		private var xcfg:CrosshairConfig;
 		private var xmlConfig:XML;
 		private var xmlLoader:URLLoader;
 		private var updateTimer:Timer;
@@ -50,21 +53,23 @@ package
 		private var debugTextFormat:TextFormat;
 		private var debugTextShadow:DropShadowFilter;
 		
-		private var gunDot:DotCrosshair;
 		private var meleeDot:DotCrosshair;
 		private var sightDot:DotCrosshair;
+		private var activateDot:DotCrosshair;
 		
-		private var gunCircle:CircleCrosshair;
+
 		private var meleeCircle:CircleCrosshair;
 		private var sightCircle:CircleCrosshair;
+		private var activeCircle:CircleCrosshair;
 		
-		private var gunCross:CrossCrosshair;
+
 		private var meleeCross:CrossCrosshair;
 		private var sightCross:CrossCrosshair;
+		private var activateCross:CrossCrosshair;
 		
 		private var meleeCrosshair:Sprite;
-		private var gunCrosshair:Sprite;
 		private var sightCrosshair:Sprite;
+		private var activateCrosshair:Sprite;
 		
 		private var ammoCount:int;
 		
@@ -75,54 +80,18 @@ package
 		
 		private var innerShadow:Number = 1;
 		
-		private var crosshairBrightness:Number = -40;
-		private var crosshairContrast:Number = 5;
-		private var crosshairSaturation:Number = 5;
-		private var crosshairGlowFilter:GlowFilter;
-		
-		private var targetCrosshairBrightness:Number = -90
-		private var targetCrosshairContrast:Number = 15;
-		private var targetCrosshairSaturation:Number = 25;
-		private var targetGlowFilter:GlowFilter;
-		
-		private var glowLength:Number = 14;
-		private var glowStrength:Number = 1;
-		
-		private var dotSize:Number = 4;
-		private var circleRadius:Number = 16;
-		private var circleThickness:Number = 2;
-		private var crossThickness:Number = 2;
-		private var crossLength:Number = 8;
-		private var crossGap:Number = 8;
-		
-		private var drawDot:Boolean = false;
-		private var drawCircle:Boolean = false;
-		private var drawCross:Boolean = false;
-		private var drawGlow:Boolean = false;
-		private var drawInnerShadow:Boolean = false;
-		private var drawOuterShadow:Boolean = false;
-		private var fo76CrosshairVisible:Boolean = false;
-		private var showCustomCrosshairOnAIm:Boolean = false;
-		
-		private var gunHasDot:Boolean = false;
-		private var gunHasCircle:Boolean = false;
-		private var gunHasCross:Boolean = false;
-		private var meleeHasDot:Boolean = false;
-		private var meleeHasCircle:Boolean = false;
-		private var meleeHasCross:Boolean = false;
-		private var sightHasDot:Boolean = false;
-		private var sightHasCircle:Boolean = false;
-		private var sightHasCross:Boolean = false;
-		
 		private var globalBottomPos:Point;
 		private var globalTopPos:Point;
+		
+		public var targetGlowFilter:GlowFilter;
+		
+		public var crosshairGlowFilter:GlowFilter;
 		
 		public function Main() 
 		{
 			updateTimer = new Timer(21, 0);
 			
 			meleeCrosshair = new Sprite();
-			gunCrosshair = new Sprite();
 			sightCrosshair = new Sprite();
 			
 			crosshairGlowFilter = new GlowFilter(0x00ff00, 1, 14, 14, 1, BitmapFilterQuality.HIGH, false, false); 	//Default border color=0xf5cb5b hue=43
@@ -191,7 +160,6 @@ package
 			displayText("localTopPos: " + new Point(topLevel.TopCenterGroup_mc.x, topLevel.TopCenterGroup_mc.y));
 			displayText("localBottomPos: " + new Point(topLevel.BottomCenterGroup_mc.x, topLevel.BottomCenterGroup_mc.y));
 			*/
-			
 			loadConfig();
 		}
 		
@@ -218,7 +186,6 @@ package
 		
 		private function onFileLoad(e:Event):void
 		{
-			
 			try
 			{
 				initCommands(e.target.data);
@@ -230,9 +197,10 @@ package
 				
 			}
 			
-			if (!fo76CrosshairVisible)
+			if (!xcfg.fo76CrosshairVisible)
 			{
 				removeFo76Crosshair();
+				removeFo76ActivateCrosshair();
 			}
 			
 			initCustomCrosshair();
@@ -272,33 +240,37 @@ package
 				var crosshairPosX:Number = topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.x;
 				var crosshairPosY:Number = topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.y;
 				
+				crosshair = new Crosshair(crosshairPosX, crosshairPosY, xcfg);
+				topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.addChild(crosshair);
+				
 				var crosshairFilters:Array = new Array();
-				if (drawInnerShadow)
+				if (xcfg.drawInnerShadow)
 					crosshairFilters.push(dropInnerShadow);
-				if (drawOuterShadow)
+				if (xcfg.drawOuterShadow)
 					crosshairFilters.push(dropOuterShadow);
 				
+				crosshair.filters = crosshairFilters;
+				
+				/*
 				//Dot
-				gunDot = new DotCrosshair(crosshairPosX, crosshairPosY, dotSize, 0xF5CB5B);
-				gunDot.visible = gunHasDot;
-				meleeDot = new DotCrosshair(crosshairPosX, crosshairPosY, dotSize, 0xF5CB5B);
-				meleeDot.visible = meleeHasDot;
-				sightDot = new DotCrosshair(crosshairPosX, crosshairPosY, dotSize, 0xF5CB5B);
-				sightDot.visible = sightHasDot;
+				meleeDot = new DotCrosshair(crosshairPosX, crosshairPosY, xcfg.dotSize, 0xF5CB5B);
+				meleeDot.visible = xcfg.meleeHasDot;
+				sightDot = new DotCrosshair(crosshairPosX, crosshairPosY, xcfg.dotSize, 0xF5CB5B);
+				sightDot.visible = xcfg.sightHasDot;
 				//Circle
-				gunCircle = new CircleCrosshair(crosshairPosX, crosshairPosY, circleRadius, circleThickness, 0xF5CB5B);
-				gunCircle.visible = gunHasCircle;
-				meleeCircle = new CircleCrosshair(crosshairPosX, crosshairPosY, circleRadius, circleThickness, 0xF5CB5B);
-				meleeCircle.visible = meleeHasCircle;
-				sightCircle = new CircleCrosshair(crosshairPosX, crosshairPosY, circleRadius, circleThickness, 0xF5CB5B);
-				sightCircle.visible = sightHasCircle;
+				gunCircle = new CircleCrosshair(crosshairPosX, crosshairPosY, xcfg.circleRadius, xcfg.circleThickness, 0xF5CB5B);
+				gunCircle.visible = xcfg.gunHasCircle;
+				meleeCircle = new CircleCrosshair(crosshairPosX, crosshairPosY, xcfg.circleRadius, xcfg.circleThickness, 0xF5CB5B);
+				meleeCircle.visible = xcfg.meleeHasCircle;
+				sightCircle = new CircleCrosshair(crosshairPosX, crosshairPosY, xcfg.circleRadius, xcfg.circleThickness, 0xF5CB5B);
+				sightCircle.visible = xcfg.sightHasCircle;
 				//Cross
-				gunCross = new CrossCrosshair(crosshairPosX, crosshairPosY, crossGap, crossLength, crossThickness, 0xF5CB5B);
-				gunCross.visible = gunHasCross;
-				meleeCross = new CrossCrosshair(crosshairPosX, crosshairPosY, crossGap, crossLength, crossThickness, 0xF5CB5B);
-				meleeCross.visible = meleeHasCross;
-				sightCross = new CrossCrosshair(crosshairPosX, crosshairPosY, crossGap, crossLength, crossThickness, 0xF5CB5B);
-				sightCross.visible = sightHasCross;
+				gunCross = new CrossCrosshair(crosshairPosX, crosshairPosY, xcfg.crossGap, xcfg.crossLength, xcfg.crossThickness, 0xF5CB5B);
+				gunCross.visible = xcfg.gunHasCross;
+				meleeCross = new CrossCrosshair(crosshairPosX, crosshairPosY, xcfg.crossGap, xcfg.crossLength, xcfg.crossThickness, 0xF5CB5B);
+				meleeCross.visible = xcfg.meleeHasCross;
+				sightCross = new CrossCrosshair(crosshairPosX, crosshairPosY, xcfg.crossGap, xcfg.crossLength, xcfg.crossThickness, 0xF5CB5B);
+				sightCross.visible = xcfg.sightHasCross;
 				
 				//Gun crosshair
 				gunCrosshair.addChild(gunDot);
@@ -323,6 +295,7 @@ package
 				sightCrosshair.filters  = crosshairFilters;
 				sightCrosshair.visible = true;
 				topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.addChild(sightCrosshair);
+				*/
 			}
 		}
 		
@@ -358,23 +331,23 @@ package
 					//Activate states
 					else if (crosshairClips.Activate_Activate.visible && !crosshairClips.Dot_Activate.visible)
 					{
-						setCustomCrosshairHidden();
+						setActivateCrosshairVisible();
 					}
 					else if (crosshairClips.Dot_Activate.visible && !crosshairClips.Activate_Activate.visible)
 					{
-						setCustomCrosshairHidden();
+						setActivateCrosshairVisible();
 					}
 					else if (crosshairClips.Standard_Activate.visible && !crosshairClips.Activate_Activate.visible)
 					{
-						setCustomCrosshairHidden();
+						setActivateCrosshairVisible();
 					}
 					else if (crosshairClips.Activate_Standard.visible && !crosshairClips.Activate_Activate.visible)
 					{
-						setCustomCrosshairHidden();
+						setActivateCrosshairVisible();
 					}
 					else if (crosshairClips.Activate_Dot.visible && !crosshairClips.Activate_Activate.visible)
 					{
-						setCustomCrosshairHidden();
+						setActivateCrosshairVisible();
 					}
 					else if (crosshairClips.Dot_Standard.visible && !crosshairClips.Dot_Dot.visible)
 					{
@@ -398,8 +371,6 @@ package
 						setCustomCrosshairHidden();
 					}
 				}
-				
-				
 				
 				
 				//Set compass at the top of the screen
@@ -431,13 +402,13 @@ package
 				if (crosshairBase.targetIsHostile == false)
 				{
 					tempFilters[0] = crosshairColorMatrixFilter;
-					if (drawGlow)
+					if (xcfg.drawGlow)
 						tempFilters[1] = crosshairGlowFilter;
 				}
 				else
 				{
 					tempFilters[0] = tragetColorMatrixFilter;
-					if (drawGlow)
+					if (xcfg.drawGlow)
 						tempFilters[1] = targetGlowFilter;
 				}
 				//Adding back filters
@@ -451,61 +422,65 @@ package
 		{
 			XML.ignoreComments = true;
 			xmlConfig = new XML(wholeFileStr);
+			xcfg = new CrosshairConfig();
+			
 			//Color options
-			crosshairBrightness = Number(xmlConfig.Colors.OffTarget.ColorChange.Brightness);
-			crosshairContrast = Number(xmlConfig.Colors.OffTarget.ColorChange.Contrast);
-			crosshairSaturation = Number(xmlConfig.Colors.OffTarget.ColorChange.Saturation);
-			targetCrosshairBrightness = Number(xmlConfig.Colors.OnTarget.ColorChange.Brightness);
-			targetCrosshairContrast = Number(xmlConfig.Colors.OnTarget.ColorChange.Contrast);
-			targetCrosshairSaturation = Number(xmlConfig.Colors.OnTarget.ColorChange.Saturation);
+			xcfg.crosshairBrightness = Number(xmlConfig.Colors.OffTarget.ColorChange.Brightness);
+			xcfg.crosshairContrast = Number(xmlConfig.Colors.OffTarget.ColorChange.Contrast);
+			xcfg.crosshairSaturation = Number(xmlConfig.Colors.OffTarget.ColorChange.Saturation);
+			xcfg.targetCrosshairBrightness = Number(xmlConfig.Colors.OnTarget.ColorChange.Brightness);
+			xcfg.targetCrosshairContrast = Number(xmlConfig.Colors.OnTarget.ColorChange.Contrast);
+			xcfg.targetCrosshairSaturation = Number(xmlConfig.Colors.OnTarget.ColorChange.Saturation);
 			
 			//Glow
 			crosshairGlowFilter.color = uint("0x" + xmlConfig.Colors.OffTarget.Glow.RGB);
-			glowLength = Number(xmlConfig.Filters.Glow.Length);
-			crosshairGlowFilter.blurX = glowLength;
-			crosshairGlowFilter.blurY = glowLength;
-			glowStrength = Number(xmlConfig.Filters.Glow.Strength);
-			crosshairGlowFilter.strength = glowStrength;
+			xcfg.glowLength = Number(xmlConfig.Filters.Glow.Length);
+			crosshairGlowFilter.blurX = xcfg.glowLength;
+			crosshairGlowFilter.blurY = xcfg.glowLength;
+			xcfg.glowStrength = Number(xmlConfig.Filters.Glow.Strength);
+			crosshairGlowFilter.strength = xcfg.glowStrength;
 			targetGlowFilter.color = uint("0x" + xmlConfig.Colors.OnTarget.Glow.RGB);
 			
 			//Target off
-			var crosshairHUE:Number = ColorMath.hex2hsb(uint("0x" + xmlConfig.Colors.OffTarget.ColorChange.RGB))[0];
-			crosshairColorMatrixFilter = ColorMath.getColorChangeFilter(crosshairBrightness, crosshairContrast, crosshairSaturation, crosshairHUE-43); //-43 because default corsshair hue is 43
+			xcfg.targetCrosshairColor = uint("0x" + xmlConfig.Colors.OffTarget.ColorChange.RGB);
+			var crosshairHUE:Number = ColorMath.hex2hsb(xcfg.targetCrosshairColor)[0];
+			crosshairColorMatrixFilter = ColorMath.getColorChangeFilter(xcfg.crosshairBrightness, xcfg.crosshairContrast, xcfg.crosshairSaturation, crosshairHUE-43); //-43 because default corsshair hue is 43
 			
 			//Target On
-			var targetCrosshairHUE:Number = ColorMath.hex2hsb(uint("0x" + xmlConfig.Colors.OnTarget.ColorChange.RGB))[0];
-			tragetColorMatrixFilter = ColorMath.getColorChangeFilter(targetCrosshairBrightness, targetCrosshairContrast, targetCrosshairSaturation, targetCrosshairHUE-43);
+			xcfg.crosshairColor = uint("0x" + xmlConfig.Colors.OnTarget.ColorChange.RGB);
+			var targetCrosshairHUE:Number = ColorMath.hex2hsb(xcfg.crosshairColor)[0];
+			tragetColorMatrixFilter = ColorMath.getColorChangeFilter(xcfg.targetCrosshairBrightness, xcfg.targetCrosshairContrast, xcfg.targetCrosshairSaturation, targetCrosshairHUE-43);
 			
 			//Circle properties
-			circleRadius = Number(xmlConfig.Parts.Custom.Shapes.Circle.Radius);
-			circleThickness = Number(xmlConfig.Parts.Custom.Shapes.Circle.Thickness);
+			xcfg.circleRadius = Number(xmlConfig.Parts.Custom.Shapes.Circle.Radius);
+			xcfg.circleThickness = Number(xmlConfig.Parts.Custom.Shapes.Circle.Thickness);
 			
 			//Dot properties
-			dotSize = Number(xmlConfig.Parts.Custom.Shapes.Dot.Size);
+			xcfg.dotSize = Number(xmlConfig.Parts.Custom.Shapes.Dot.Size);
 			
 			//Cross properties
-			crossGap = Number(xmlConfig.Parts.Custom.Shapes.Cross.Gap);
-			crossLength = Number(xmlConfig.Parts.Custom.Shapes.Cross.Length);
-			crossThickness = Number(xmlConfig.Parts.Custom.Shapes.Cross.Thickness);
+			xcfg.crossGap = Number(xmlConfig.Parts.Custom.Shapes.Cross.Gap);
+			xcfg.crossLength = Number(xmlConfig.Parts.Custom.Shapes.Cross.Length);
+			xcfg.crossThickness = Number(xmlConfig.Parts.Custom.Shapes.Cross.Thickness);
 			
 			//Booleans toggle
-			meleeHasDot = xmlConfig.Parts.Custom.MeleeState.ShowDot == "true";
-			meleeHasCircle = xmlConfig.Parts.Custom.MeleeState.ShowCircle == "true";
-			meleeHasCross = xmlConfig.Parts.Custom.MeleeState.ShowCross == "true";
+			xcfg.meleeHasDot = xmlConfig.Parts.Custom.MeleeState.ShowDot == "true";
+			xcfg.meleeHasCircle = xmlConfig.Parts.Custom.MeleeState.ShowCircle == "true";
+			xcfg.meleeHasCross = xmlConfig.Parts.Custom.MeleeState.ShowCross == "true";
 			
-			gunHasDot = xmlConfig.Parts.Custom.GunState.ShowDot == "true";
-			gunHasCircle = xmlConfig.Parts.Custom.GunState.ShowCircle == "true";
-			gunHasCross = xmlConfig.Parts.Custom.GunState.ShowCross == "true";
+			xcfg.gunHasDot = xmlConfig.Parts.Custom.GunState.ShowDot == "true";
+			xcfg.gunHasCircle = xmlConfig.Parts.Custom.GunState.ShowCircle == "true";
+			xcfg.gunHasCross = xmlConfig.Parts.Custom.GunState.ShowCross == "true";
 			
-			sightHasDot = xmlConfig.Parts.Custom.OnSightState.ShowDot == "true";
-			sightHasCircle = xmlConfig.Parts.Custom.OnSightState.ShowCircle == "true";
-			sightHasCross = xmlConfig.Parts.Custom.OnSightState.ShowCross == "true";
+			xcfg.sightHasDot = xmlConfig.Parts.Custom.OnSightState.ShowDot == "true";
+			xcfg.sightHasCircle = xmlConfig.Parts.Custom.OnSightState.ShowCircle == "true";
+			xcfg.sightHasCross = xmlConfig.Parts.Custom.OnSightState.ShowCross == "true";
 			
-			drawGlow = xmlConfig.Filters.Glow.Visible == "true";
-			drawInnerShadow = xmlConfig.Filters.InnerShadow.Visible == "true";
-			drawOuterShadow = xmlConfig.Filters.OuterShadow.Visible == "true";
-			fo76CrosshairVisible = xmlConfig.Parts.Fo76.Visible == "true";
-			showCustomCrosshairOnAIm = xmlConfig.Parts.Custom.ShowOnAim == "true";
+			xcfg.drawGlow = xmlConfig.Filters.Glow.Visible == "true";
+			xcfg.drawInnerShadow = xmlConfig.Filters.InnerShadow.Visible == "true";
+			xcfg.drawOuterShadow = xmlConfig.Filters.OuterShadow.Visible == "true";
+			xcfg.fo76CrosshairVisible = xmlConfig.Parts.Fo76.Visible == "true";
+			xcfg.showCustomCrosshairOnAIm = xmlConfig.Parts.Custom.ShowOnAim == "true";
 		}
 		
 		
@@ -525,30 +500,53 @@ package
 		
 		private function setGunCrosshairVisible():void
 		{
-			gunCrosshair.visible = true;
-			meleeCrosshair.visible = false;
-			sightCrosshair.visible = false;
+			crosshair.gun.visible = true;
+			crosshair.melee.visible = false;
+			crosshair.activate.visible = false;
+			crosshair.sight.visible = false;
 		}
 		
 		private function setMeleeCrosshairVisible():void
 		{
-			gunCrosshair.visible = false;
-			meleeCrosshair.visible = true;
-			sightCrosshair.visible = false;
+			crosshair.gun.visible = false;
+			crosshair.melee.visible = true;
+			crosshair.activate.visible = false;
+			crosshair.sight.visible = false;
+		}
+		
+		private function setActivateCrosshairVisible():void
+		{
+			crosshair.gun.visible = false;
+			crosshair.melee.visible = false;
+			crosshair.activate.visible = true;
+			crosshair.sight.visible = false;
 		}
 		
 		private function setSightCrosshairVisible():void
 		{
-			gunCrosshair.visible = false;
-			meleeCrosshair.visible = false;
-			sightCrosshair.visible = true;
+			crosshair.gun.visible = false;
+			crosshair.activate.visible = false;
+			crosshair.melee.visible = false;
+			crosshair.sight.visible = true;
 		}
 		
 		private function setCustomCrosshairHidden():void
 		{
-			gunCrosshair.visible = false;
-			meleeCrosshair.visible = false;
-			sightCrosshair.visible = false;
+			crosshair.gun.visible = false;
+			crosshair.activate.visible = false;
+			crosshair.melee.visible = false;
+			crosshair.sight.visible = false;
+		}
+		
+		private function removeFo76ActivateCrosshair():void
+		{
+			var offScreenPosition:Number = -5000;
+			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Activate_Activate.x = offScreenPosition;
+			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Activate_Standard.x = offScreenPosition;
+			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Activate_Dot.x = offScreenPosition;
+			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Dot_Activate.x = offScreenPosition;
+			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Standard_Activate.x = offScreenPosition;
+			
 		}
 		
 		private function removeFo76Crosshair():void
@@ -558,7 +556,6 @@ package
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.None_Standard.x = offScreenPosition;
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.None_Dot.x = offScreenPosition;
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Dot_Dot.x = offScreenPosition;
-			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Dot_None.x = offScreenPosition;
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Dot_None.x = offScreenPosition;
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Dot_Standard.x = offScreenPosition;
 			topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.Standard_Standard.x = offScreenPosition;
@@ -599,14 +596,14 @@ package
 		
 		private function displayDebugText():void
 		{
-			displayText("MeterBarEnemy percent " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc..percent);
+			/*
+			displayText("MeterBarEnemy percent " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc.percent);
 			displayText("MeterBarFriendly width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarFriendly_mc.width);
 			displayText("MeterBarEnemy width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc.width);
 			displayText("MeterBarInternal width " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.MeterBarEnemy_mc.width);
 			displayText("EnnemyHealth percent " + topLevel.TopCenterGroup_mc.EnemyHealthMeter_mc.percent);
 			displayText(" ~ ");
 			
-			/*
 			displayText("CrosshairTicks " + crosshairTicks.visible.toString());
 			displayText("CrosshairClips " + crosshairClips.visible.toString());
 			displayText("None_None " + crosshairClips.None_None.visible.toString());

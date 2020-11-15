@@ -1,5 +1,6 @@
 package 
 {
+	
 	import figures.Circle;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -9,27 +10,52 @@ package
 	import cfg.CrosshairConfig;
 	
 	/**
-	 * ...
+	 * Shown on different state of the crosshair.
 	 * @author Bolbman
 	 */
 	public class CrosshairState extends Sprite
 	{
-		public static var GUN_STATE:String = "GUN_STATE";
-		public static var MELEE_STATE:String = "MELEE_STATE";
-		public static var ACTIVATE_STATE:String = "ACTIVATE_STATE";
-		public static var SIGHT_STATE:String = "SIGHT_STATE";
+		public static var GUN_STATE:String = "GUN";
+		public static var MELEE_STATE:String = "MELEE";
+		public static var ACTIVATE_STATE:String = "ACTIVATE";
+		public static var SIGHT_STATE:String = "SIGHT";
 		public var state:String;
 		
 		public var dot:DotCrosshair;
 		public var circle:CircleCrosshair;
 		public var cross:CrossCrosshair;
 		
-		public function CrosshairState(_state:String, _crosshairPosX:Number, _crosshairPosY:Number, _xcfg:CrosshairConfig) 
+		public function CrosshairState(stateParam:String, crosshairPosX:Number, crosshairPosY:Number, xcfg:CrosshairConfig) 
 		{
-			state = _state;
-			dot = new DotCrosshair(_crosshairPosX, _crosshairPosY, _xcfg.dotSize, 0xF5CB5B);
-			circle = new CircleCrosshair(_crosshairPosX, _crosshairPosY, _xcfg.circleRadius, _xcfg.circleThickness, 0xF5CB5B);
-			cross = new CrossCrosshair(_crosshairPosX, _crosshairPosY, _xcfg.crossGap, _xcfg.crossLength, _xcfg.crossThickness, 0xF5CB5B);
+			state = stateParam;
+			
+			switch (state) 
+			{
+				case GUN_STATE: 
+					dot = new DotCrosshair(crosshairPosX, crosshairPosY, xcfg.gunDotSize, 0xF5CB5B);
+					circle = new CircleCrosshair(crosshairPosX, crosshairPosY, xcfg.gunCircleRadius, xcfg.gunCircleThickness, 0xF5CB5B);
+					cross = new CrossCrosshair(crosshairPosX, crosshairPosY, xcfg.gunCrossGap, xcfg.gunCrossLength, xcfg.gunCrossThickness, 0xF5CB5B);
+				break;
+				case MELEE_STATE: 
+					dot = new DotCrosshair(crosshairPosX, crosshairPosY, xcfg.meleeDotSize, 0xF5CB5B);
+					circle = new CircleCrosshair(crosshairPosX, crosshairPosY, xcfg.meleeCircleRadius, xcfg.meleeCircleThickness, 0xF5CB5B);
+					cross = new CrossCrosshair(crosshairPosX, crosshairPosY, xcfg.meleeCrossGap, xcfg.meleeCrossLength, xcfg.meleeCrossThickness, 0xF5CB5B);
+				break;
+				case ACTIVATE_STATE: 
+					dot = new DotCrosshair(crosshairPosX, crosshairPosY, xcfg.activateDotSize, 0xF5CB5B);
+					circle = new CircleCrosshair(crosshairPosX, crosshairPosY, xcfg.activateCircleRadius, xcfg.activateCircleThickness, 0xF5CB5B);
+					cross = new CrossCrosshair(crosshairPosX, crosshairPosY, xcfg.activateCrossGap, xcfg.activateCrossLength, xcfg.activateCrossThickness, 0xF5CB5B);
+				break;
+				case SIGHT_STATE: 
+					dot = new DotCrosshair(crosshairPosX, crosshairPosY, xcfg.sightDotSize, 0xF5CB5B);
+					circle = new CircleCrosshair(crosshairPosX, crosshairPosY, xcfg.sightCircleRadius, xcfg.sightCircleThickness, 0xF5CB5B);
+					cross = new CrossCrosshair(crosshairPosX, crosshairPosY, xcfg.sightCrossGap, xcfg.sightCrossLength, xcfg.sightCrossThickness, 0xF5CB5B);
+				break;
+				default:
+					dot = new DotCrosshair(crosshairPosX, crosshairPosY, xcfg.meleeDotSize, 0xF5CB5B);
+					circle = new CircleCrosshair(crosshairPosX, crosshairPosY, xcfg.meleeCircleRadius, xcfg.meleeCircleThickness, 0xF5CB5B);
+					cross = new CrossCrosshair(crosshairPosX, crosshairPosY, xcfg.meleeCrossGap, xcfg.meleeCrossLength, xcfg.meleeCrossThickness, 0xF5CB5B);
+			}
 			
 			addChild(dot);
 			addChild(circle);

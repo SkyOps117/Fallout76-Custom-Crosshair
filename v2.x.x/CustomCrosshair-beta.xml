@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Crosshair>
+
+<Colors>
+  <OnTarget>
+	<ColorChange>
+	  <RGB>ff0000</RGB>
+	  <Brightness>0</Brightness>
+	  <Saturation>69</Saturation>
+	  <Contrast>0</Contrast>
+	</ColorChange>
+	<Glow>
+	  <RGB>ff0000</RGB>
+	</Glow>
+  </OnTarget>
+  <OffTarget>
+	  <ColorChange>
+		  <RGB>00ff00</RGB>
+		  <Brightness>0</Brightness>
+		  <Saturation>63</Saturation>
+		  <Contrast>0</Contrast>
+	  </ColorChange>
+	  <Glow>
+		  <RGB>00ff00</RGB>
+	  </Glow>
+  </OffTarget>
+</Colors>
+
+<Filters>
+	<Glow>
+		<Visible>false</Visible>
+		<Length>4</Length>
+		<Strength>1.2</Strength>
+	</Glow>
+	<InnerShadow>
+		<Visible>false</Visible>
+	</InnerShadow>
+	<OuterShadow>
+		<Visible>true</Visible>
+	</OuterShadow>
+</Filters>
+
+<part state="Gun">
+	<dot>
+		<enable>true</enable>
+		<size>2</size>
+	</dot>
+	<circle>
+		<enable>true</enable>
+		<radius>10</radius>
+		<thickness>2</thickness>
+	</circle>
+	<cross>
+		<enable>true</enable>
+		<gap>8</gap>
+		<length>10</length>
+		<thickness>2</thickness>
+	</cross>
+</part>
+
+<part state="Melee">
+	<dot>
+		<enable>true</enable>
+		<size>2</size>
+	</dot>
+	<circle>
+		<enable>true</enable>
+		<radius>10</radius>
+		<thickness>2</thickness>
+	</circle>
+	<cross>
+		<enable>true</enable>
+		<gap>8</gap>
+		<length>10</length>
+		<thickness>2</thickness>
+	</cross>
+</part>
+
+<part state="Activate">
+	<dot>
+		<enable>true</enable>
+		<size>2</size>
+	</dot>
+	<circle>
+		<enable>true</enable>
+		<radius>10</radius>
+		<thickness>2</thickness>
+	</circle>
+	<cross>
+		<enable>true</enable>
+		<gap>8</gap>
+		<length>10</length>
+		<thickness>2</thickness>
+	</cross>
+</part>
+
+<part state="Sight">
+	<dot>
+		<enable>true</enable>
+		<size>2</size>
+	</dot>
+	<circle>
+		<enable>true</enable>
+		<radius>10</radius>
+		<thickness>2</thickness>
+	</circle>
+	<cross>
+		<enable>true</enable>
+		<gap>8</gap>
+		<length>10</length>
+		<thickness>2</thickness>
+	</cross>
+</part>
+
+</Crosshair>

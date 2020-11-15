@@ -9,7 +9,7 @@ package
 	import CrosshairState;
 	
 	/**
-	 * ...
+	 * Custom crosshair
 	 * @author Bolbman
 	 */
 	public class Crosshair extends Sprite
@@ -39,9 +39,9 @@ package
 			melee.cross.visible = xcfg.meleeHasCross;
 			
 			activate = new CrosshairState(CrosshairState.ACTIVATE_STATE, crosshairPosX, crosshairPosY, xcfg);
-			activate.dot.visible = true;  //temp
-			activate.circle.visible = true;  //temp
-			activate.cross.visible = false;  //temp
+			activate.dot.visible = xcfg.activateHasDot;
+			activate.circle.visible = xcfg.activateHasCircle;
+			activate.cross.visible = xcfg.activateHasCross;
 			
 			sight = new CrosshairState(CrosshairState.SIGHT_STATE, crosshairPosX, crosshairPosY, xcfg);
 			sight.dot.visible = xcfg.sightHasDot;
@@ -53,6 +53,46 @@ package
 			addChild(activate);
 			addChild(sight);
 			visible = true;
+		}
+		
+		public function setGunCrosshairVisible():void
+		{
+			gun.visible = true;
+			melee.visible = false;
+			activate.visible = false;
+			sight.visible = false;
+		}
+		
+		public function setMeleeCrosshairVisible():void
+		{
+			gun.visible = false;
+			melee.visible = true;
+			activate.visible = false;
+			sight.visible = false;
+		}
+		
+		public function setActivateCrosshairVisible():void
+		{
+			gun.visible = false;
+			melee.visible = false;
+			activate.visible = true;
+			sight.visible = false;
+		}
+		
+		public function setSightCrosshairVisible():void
+		{
+			gun.visible = false;
+			activate.visible = false;
+			melee.visible = false;
+			sight.visible = true;
+		}
+		
+		public function setCustomCrosshairHidden():void
+		{
+			gun.visible = false;
+			activate.visible = false;
+			melee.visible = false;
+			sight.visible = false;
 		}
 		
 	}

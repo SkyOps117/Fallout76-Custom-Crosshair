@@ -3,7 +3,7 @@ package parts
 	import figures.Rectangle;
 	import flash.display.Sprite;
 	/**
-	 * ...
+	 * 
 	 * @author Bolbman
 	 */
 	public class CrossCrosshair extends Sprite

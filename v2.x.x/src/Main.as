@@ -223,7 +223,7 @@ package
 				var crosshairPosY:Number = topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.y;
 				
 				crosshair = new Crosshair(crosshairPosX, crosshairPosY, xcfg);
-				topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.addChild(crosshair);
+				topLevel.CenterGroup_mc.HUDCrosshair_mc.addChild(crosshair);
 				
 				var crosshairFilters:Array = new Array();
 				if (xcfg.drawInnerShadow)

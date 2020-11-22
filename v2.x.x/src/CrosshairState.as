@@ -10,7 +10,7 @@ package
 	import cfg.CrosshairConfig;
 	
 	/**
-	 * Shown on different state of the crosshair.
+	 * Shown on different state of the crosshair in the main
 	 * @author Bolbman
 	 */
 	public class CrosshairState extends Sprite
@@ -19,6 +19,7 @@ package
 		public static var MELEE_STATE:String = "MELEE";
 		public static var ACTIVATE_STATE:String = "ACTIVATE";
 		public static var SIGHT_STATE:String = "SIGHT";
+		public static var NONE_STATE:String = "NONE"; //Not used in constructor.
 		public var state:String;
 		
 		public var dot:DotCrosshair;
@@ -61,6 +62,13 @@ package
 			addChild(circle);
 			addChild(cross);
 			visible = true;
+		}
+		
+		public function setColor(_color:uint):void
+		{
+			dot.setColor(_color);
+			circle.setColor(_color);
+			cross.setColor(_color);
 		}
 		
 	}

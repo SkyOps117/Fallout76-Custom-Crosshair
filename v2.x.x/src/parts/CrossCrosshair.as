@@ -33,6 +33,13 @@ package parts
 			visible = true;
 		}
 		
+		public function setColor(_color:uint):void
+		{
+			tickLeft.setColor(_color);
+			tickRight.setColor(_color);
+			tickUp.setColor(_color);
+			tickDown.setColor(_color);
+		}
 		
 	}
 

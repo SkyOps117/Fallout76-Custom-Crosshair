@@ -17,15 +17,16 @@ package parts
 			visible = true;
 		}
 		
+		public function setColor(_color:uint):void
+		{
+			hollowCircle.setColor(_color);
+		}
+		
 		public function setRadius(_size:int):void
 		{
 			hollowCircle.setRadius(_size);
 		}
 		
-		public function getColor():uint
-		{
-			return hollowCircle.color;
-		}
 		
 	}
 

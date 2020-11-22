@@ -7,11 +7,19 @@ package figures
 	 */
 	public class Rectangle extends Sprite
 	{
-		public var color:uint;
+		private var x:Number;
+		private var y:Number;
+		private var color:uint;
+		private var width:int;
+		private var height:int;
 		
 		public function Rectangle(_posX:int, _posY:int, _width:int, _height:int, _color:uint):void 
 		{
+			x = _posX;
+			y = _posY;
 			color = _color;
+			width = _width;
+			height = _height;
 			draw(_posX, _posY, _width, _height, color);
 			visible = true;
 		}

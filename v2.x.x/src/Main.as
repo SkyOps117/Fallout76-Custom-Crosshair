@@ -35,7 +35,6 @@ package
 	import cfg.CrosshairConfig;
 	import CrosshairIndex;
 	import Crosshair;
-	import JSON;
 	
 	/**
 	 * SWF main class.
@@ -55,21 +54,6 @@ package
 		private var debugTextFormat:TextFormat;
 		private var debugTextShadow:DropShadowFilter;
 		
-		private var meleeDot:DotCrosshair;
-		private var sightDot:DotCrosshair;
-		private var activateDot:DotCrosshair;
-		
-		private var meleeCircle:CircleCrosshair;
-		private var sightCircle:CircleCrosshair;
-		private var activeCircle:CircleCrosshair;
-		
-		private var meleeCross:CrossCrosshair;
-		private var sightCross:CrossCrosshair;
-		private var activateCross:CrossCrosshair;
-		
-		private var meleeCrosshair:Sprite;
-		private var sightCrosshair:Sprite;
-		private var activateCrosshair:Sprite;
 		
 		private var ammoCount:int;
 		
@@ -90,9 +74,6 @@ package
 		public function Main() 
 		{
 			updateTimer = new Timer(21, 0);
-			
-			meleeCrosshair = new Sprite();
-			sightCrosshair = new Sprite();
 			
 			crosshairGlowFilter = new GlowFilter(0x00ff00, 1, 14, 14, 1, BitmapFilterQuality.HIGH, false, false); 	//Default border color=0xf5cb5b hue=43
 			targetGlowFilter = new GlowFilter(0xff0000, 1, 14, 14, 1, BitmapFilterQuality.HIGH, false, false);		//Default inside color=0xFFFFCB hue=60
@@ -147,8 +128,9 @@ package
 			}
 			*/
 			
-			globalBottomPos = topLevel.BottomCenterGroup_mc.localToGlobal(new Point(topLevel.BottomCenterGroup_mc.x, topLevel.BottomCenterGroup_mc.y));
-			globalTopPos = topLevel.TopCenterGroup_mc.localToGlobal(new Point(topLevel.TopCenterGroup_mc.x, topLevel.TopCenterGroup_mc.y));
+			
+			//globalBottomPos = topLevel.BottomCenterGroup_mc.localToGlobal(new Point(topLevel.BottomCenterGroup_mc.x, topLevel.BottomCenterGroup_mc.y));
+			//globalTopPos = topLevel.TopCenterGroup_mc.localToGlobal(new Point(topLevel.TopCenterGroup_mc.x, topLevel.TopCenterGroup_mc.y));
 			
 			//Scale ennemy/ally health bar
 			//topLevel.TopCenterGroup_mc.scaleX = 1.5;
@@ -351,22 +333,35 @@ package
 				
 				//Filters
 				//Get current filters
-				var tempFilters:Array = crosshairBase.filters;
+				var clipsFilters:Array = crosshairClips.filters;
+				var ticksFilters:Array = crosshairTicks.filters;
 				//Apply the filters to our array
 				if (crosshairBase.targetIsHostile == false)
 				{
-					tempFilters[0] = crosshairColorMatrixFilter;
+					clipsFilters[0] = crosshairColorMatrixFilter;
+					ticksFilters[0] = crosshairColorMatrixFilter;
 					if (xcfg.drawGlow)
-						tempFilters[1] = crosshairGlowFilter;
+					{
+						clipsFilters[1] = crosshairGlowFilter;
+						ticksFilters[1] = crosshairGlowFilter;
+					}
+					crosshair.setColor(xcfg.crosshairColor);
 				}
 				else
 				{
-					tempFilters[0] = tragetColorMatrixFilter;
+					clipsFilters[0] = tragetColorMatrixFilter;
+					ticksFilters[0] = tragetColorMatrixFilter;
 					if (xcfg.drawGlow)
-						tempFilters[1] = targetGlowFilter;
+					{
+						clipsFilters[1] = targetGlowFilter;
+						ticksFilters[1] = targetGlowFilter;
+					}
+					crosshair.setColor(xcfg.targetCrosshairColor);
 				}
 				//Adding back filters
-				topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.filters = tempFilters;
+				topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairTicks_mc.filters = ticksFilters;
+				topLevel.CenterGroup_mc.HUDCrosshair_mc.CrosshairBase_mc.CrosshairClips_mc.filters = clipsFilters
+				
 			}
 			
 		}
@@ -396,13 +391,13 @@ package
 			targetGlowFilter.color = uint("0x" + xmlConfig.Colors.OnTarget.Glow.RGB);
 			
 			//Target off
-			xcfg.targetCrosshairColor = uint("0x" + xmlConfig.Colors.OffTarget.ColorChange.RGB);
-			var crosshairHUE:Number = ColorMath.hex2hsb(xcfg.targetCrosshairColor)[0];
+			xcfg.crosshairColor = uint("0x" + xmlConfig.Colors.OffTarget.ColorChange.RGB);
+			var crosshairHUE:Number = ColorMath.hex2hsb(xcfg.crosshairColor)[0];
 			crosshairColorMatrixFilter = ColorMath.getColorChangeFilter(xcfg.crosshairBrightness, xcfg.crosshairContrast, xcfg.crosshairSaturation, crosshairHUE-43); //-43 because default corsshair hue is 43
 			
-			//Target On
-			xcfg.crosshairColor = uint("0x" + xmlConfig.Colors.OnTarget.ColorChange.RGB);
-			var targetCrosshairHUE:Number = ColorMath.hex2hsb(xcfg.crosshairColor)[0];
+			//Target on
+			xcfg.targetCrosshairColor = uint("0x" + xmlConfig.Colors.OnTarget.ColorChange.RGB);
+			var targetCrosshairHUE:Number = ColorMath.hex2hsb(xcfg.targetCrosshairColor)[0];
 			tragetColorMatrixFilter = ColorMath.getColorChangeFilter(xcfg.targetCrosshairBrightness, xcfg.targetCrosshairContrast, xcfg.targetCrosshairSaturation, targetCrosshairHUE-43);
 			
 			

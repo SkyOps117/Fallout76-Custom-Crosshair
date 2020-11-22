@@ -7,9 +7,9 @@ package figures
 	 */
 	public class HollowCircle extends Sprite
 	{
-		public var radius:int;
-		public var thickness:int;
-		public var color:uint;
+		private var radius:int;
+		private var thickness:int;
+		private var color:uint;
 		
 		public function HollowCircle(_x:Number, _y:Number, _radius:int, _thickness:int, _color:uint):void
 		{
@@ -26,6 +26,12 @@ package figures
 			graphics.lineStyle(thickness, color, 1, false, "normal", null, null, 3);
 			graphics.drawCircle(_x, _y, radius);
 			graphics.endFill();
+		}
+		
+		public function setColor(_color:uint):void
+		{
+			color = _color;
+			draw(x, y);
 		}
 		
 		public function setRadius(_radius:int):void

@@ -7,8 +7,8 @@ package figures
 	 */
 	public class Circle extends Sprite
 	{
-		public var radius:int;
-		public var color:uint;
+		private var radius:int;
+		private var color:uint;
 		
 		public function Circle(_x:Number, _y:Number, _radius:int, _color:uint):void
 		{
@@ -27,17 +27,19 @@ package figures
 			graphics.endFill();
 		}
 		
+		public function setColor(_color:uint):void
+		{
+			color = _color;
+			draw(x, y);
+		}
+		
 		public function setRadius(_radius:int):void
 		{
 			radius = _radius;
 			draw(x, y);
 		}
 		
-		public function setColor(_color:uint):void
-		{
-			color = _color;
-			draw(x, y);
-		}
+
 	}
 
 }

@@ -20,15 +20,17 @@ package parts
 			visible = true;
 		}
 		
+		public function setColor(_color:uint):void
+		{
+			circle.setColor(_color);
+		}
+		
 		public function setSize(_size:int):void
 		{
 			circle.setRadius(_size);
 		}
 		
-		public function getColor():uint
-		{
-			return circle.color;
-		}
+
 		
 	}
 

@@ -1,7 +1,7 @@
 package 
 {
 	/**
-	 * ...
+	 * CrosshairClips_mc children indexes
 	 * @author Bolbman
 	 */
 	public class CrosshairIndex 

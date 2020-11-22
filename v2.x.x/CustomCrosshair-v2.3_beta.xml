@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Crosshair>
 
+<bethesda>
+	<enable>false</enable>
+	
+</bethesda>
+
 <Colors>
   <OnTarget>
 	<ColorChange>
 	  <RGB>ff0000</RGB>
-	  <Brightness>0</Brightness>
-	  <Saturation>69</Saturation>
+	  <Brightness>-25</Brightness>
+	  <Saturation>35</Saturation>
 	  <Contrast>0</Contrast>
 	</ColorChange>
 	<Glow>
-	  <RGB>ff0000</RGB>
+	  <RGB>ff00ff</RGB>
 	</Glow>
   </OnTarget>
   <OffTarget>
 	  <ColorChange>
-		  <RGB>00ff00</RGB>
+		  <RGB>00CAFF</RGB>
 		  <Brightness>0</Brightness>
-		  <Saturation>63</Saturation>
+		  <Saturation>50</Saturation>
 		  <Contrast>0</Contrast>
 	  </ColorChange>
 	  <Glow>
-		  <RGB>00ff00</RGB>
+		  <RGB>BA00FF</RGB>
 	  </Glow>
   </OffTarget>
 </Colors>
 
 <Filters>
 	<Glow>
-		<Visible>false</Visible>
-		<Length>4</Length>
+		<Visible>true</Visible>
+		<Length>8</Length>
 		<Strength>1.2</Strength>
 	</Glow>
 	<InnerShadow>
@@ -40,13 +45,13 @@
 	</OuterShadow>
 </Filters>
 
-<part state="Gun">
+<part state="GUN">
 	<dot>
-		<enable>true</enable>
+		<enable>false</enable>
 		<size>2</size>
 	</dot>
 	<circle>
-		<enable>true</enable>
+		<enable>false</enable>
 		<radius>10</radius>
 		<thickness>2</thickness>
 	</circle>
@@ -58,54 +63,54 @@
 	</cross>
 </part>
 
-<part state="Melee">
+<part state="MELEE">
 	<dot>
 		<enable>true</enable>
-		<size>2</size>
+		<size>3</size>
 	</dot>
 	<circle>
-		<enable>true</enable>
+		<enable>false</enable>
 		<radius>10</radius>
 		<thickness>2</thickness>
 	</circle>
 	<cross>
-		<enable>true</enable>
-		<gap>8</gap>
+		<enable>false</enable>
+		<gap>12</gap>
 		<length>10</length>
 		<thickness>2</thickness>
 	</cross>
 </part>
 
-<part state="Activate">
+<part state="ACTIVATE">
 	<dot>
-		<enable>true</enable>
+		<enable>false</enable>
 		<size>2</size>
 	</dot>
 	<circle>
 		<enable>true</enable>
-		<radius>10</radius>
+		<radius>8</radius>
 		<thickness>2</thickness>
 	</circle>
 	<cross>
 		<enable>true</enable>
-		<gap>8</gap>
+		<gap>16</gap>
 		<length>10</length>
 		<thickness>2</thickness>
 	</cross>
 </part>
 
-<part state="Sight">
+<part state="SIGHT">
 	<dot>
 		<enable>true</enable>
 		<size>2</size>
 	</dot>
 	<circle>
-		<enable>true</enable>
+		<enable>false</enable>
 		<radius>10</radius>
 		<thickness>2</thickness>
 	</circle>
 	<cross>
-		<enable>true</enable>
+		<enable>false</enable>
 		<gap>8</gap>
 		<length>10</length>
 		<thickness>2</thickness>

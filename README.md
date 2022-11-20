@@ -1,8 +1,9 @@
 # Custom-Crosshair
 Crosshair mod for Fallout 76. 
 
-## Preview video
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=rSAlH52bP04" target="_blank"><img src="http://img.youtube.com/vi/rSAlH52bP04/0.jpg" alt="PREVIEW VIDEO" width="960" height="540" border="10" /></a>
+❗ Under development. Not functional for now.
+
+⇩ Old mod page ⇩
 
 ## + Mod ability
   - Add a dot, circle and static cross.
@@ -109,7 +110,6 @@ You can download it in the bethesda launcher.
 Default location: Bethesda.net Launcher\games\CK\Tools\Archive2\Archive2.exe
 
 
-
 ### ♥ People to thanks
 Big thanks to Keretus and Liyalai for helping improving compatibility with other major HUD interface mods.
 
@@ -149,4 +149,10 @@ Versioning is currently inconsistent in the nexus changelog before 2.0.0
 1.1 Must be placed after PLM, Improved Health Bar and Event Notification.
 
 1.1 Know to conflic with: Unstretched ultrawide, Chat mod.
+
+
+## Preview video
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=rSAlH52bP04" target="_blank"><img src="http://img.youtube.com/vi/rSAlH52bP04/0.jpg" alt="PREVIEW VIDEO" width="960" height="540" border="10" /></a>
+
+
 
